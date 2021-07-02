@@ -9,17 +9,23 @@ public class RotatePlatform : MonoBehaviour
     [SerializeField] GameObject movePlatform2;
     [SerializeField] GameObject slidePlatform;
     [SerializeField] GameObject slideUp_Platform;
+    [SerializeField] GameObject Door1;
+    [SerializeField] GameObject Door2;
 
     
     Animator rotatePlatform_anim;
     Animator slidePlatform_anim;
     Animator slideUp_Platform_anim;
+    Animator Door1_anim;
+    Animator Door2_anim;
 
     void Start()
     {
         rotatePlatform_anim = rotatePlatform.GetComponent<Animator>();
         slidePlatform_anim = slidePlatform.GetComponent<Animator>();
         slideUp_Platform_anim = slideUp_Platform.GetComponent<Animator>();
+        Door1_anim = Door1.GetComponent<Animator>();
+        Door2_anim = Door2.GetComponent<Animator>();
     }
 
     void Update()
@@ -43,11 +49,14 @@ public class RotatePlatform : MonoBehaviour
         {
             movePlatform1.GetComponent<MovePlatform>().enabled = true;
             movePlatform2.GetComponent<MovePlatform>().enabled = true;
+            Door1_anim.SetBool("CanOpen", true);
+            Door2_anim.SetBool("CanOpen", true);
         }
 
         if (collision.gameObject.CompareTag("SlideButtonTrigger"))
         {
             StartCoroutine(DelaySlide());
+
         }
 
         if (collision.gameObject.CompareTag("ChipTrigger"))

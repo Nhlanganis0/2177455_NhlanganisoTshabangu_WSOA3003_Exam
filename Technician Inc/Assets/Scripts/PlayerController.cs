@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using MLAPI;
+using MLAPI.SceneManagement;
 using UnityEngine;
 
 public class PlayerController : NetworkBehaviour
@@ -25,6 +26,7 @@ public class PlayerController : NetworkBehaviour
 
     [SerializeField] private Transform respawnPoint;
     [SerializeField] private Transform player;
+    private bool IsnextLevel = false;
     Camera LevelOne;
 
     public Transform groundcjeck;
@@ -36,7 +38,7 @@ public class PlayerController : NetworkBehaviour
 
     void Start()
     {
-        triggerToIgnore = GameObject.Find("UpDownTrigger2");
+        triggerToIgnore = GameObject.Find("UpDownTrigger");
         CurrentLevel_Cam = GameObject.Find("LevelOneCam");
         LocalPlayer = IsLocalPlayer;
         cc = GetComponent<CharacterController>();
@@ -50,7 +52,7 @@ public class PlayerController : NetworkBehaviour
         {
             MovePlayer();
             Light light = GetComponentInChildren<Light>();
-         //   light.enabled = false;
+            light.enabled = false;
         }
     }
 
@@ -70,33 +72,57 @@ public class PlayerController : NetworkBehaviour
 
         velocity.y += gravity * Time.deltaTime;
         cc.Move(velocity * Time.deltaTime);
+        if(velocity.y <= -16)
+        {
+            velocity.y = 0f;
+        }
 
         var collider = triggerToIgnore.GetComponent<CharacterController>();
         Physics.IgnoreCollision(cc, collider, true);
+
+        if (collider == null) 
+        {
+            print("null");
+        }
+
     }
 
     IEnumerator DelayNext_Level()
     {
         yield return new WaitForSeconds(1);
+
         foreach (Camera cameras in Camera.allCameras)
         {
             if (cameras.gameObject.name == "LevelOneCam")
             {
-                Instantiate(LeveTwo_Instance, LeveTwo_InstancePos.position, Quaternion.identity);
-                CurrentLevel_Cam.SetActive(false);
+                NetworkSceneManager.SwitchScene("Level2");
+                triggerToIgnore = GameObject.Find("UpDownTrigger");
+                CurrentLevel_Cam = GameObject.Find("LevelOneCam");
             }
-            else if(cameras.gameObject.name == "LevelThreeCam")
+            else if(cameras.gameObject.name == "LevelTwoCam")
             {
-                Instantiate(LevelThree_Instance, LeveTwo_InstancePos.position, Quaternion.identity);
-                CurrentLevel_Cam.SetActive(false);
+                NetworkSceneManager.SwitchScene("EndScene");
+                triggerToIgnore = GameObject.Find("UpDownTrigger");
+                CurrentLevel_Cam = GameObject.Find("LevelOneCam");
             }
         }
-    }
 
-    IEnumerator DelayRespawnPos()
-    {
-        yield return new WaitForSeconds(2);
-        playerSpawn.Respawn();
+        if (IsLocalPlayer)
+        {
+            IsnextLevel = true;
+            if (IsnextLevel == true)
+            {
+                this.transform.position = new Vector3(-10f, -1.6f, transform.position.z);
+            }
+        }
+        else
+        {
+            IsnextLevel = true;
+            if (IsnextLevel == true)
+            {
+                this.transform.position = new Vector3(10f, -3.5f, transform.position.z);
+            }
+        }
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -107,7 +133,7 @@ public class PlayerController : NetworkBehaviour
             player.position = respawnPoint.position;
         }
 
-        if (hit.gameObject.CompareTag("Button1") || hit.gameObject.CompareTag("Button2") || hit.gameObject.CompareTag("Key")|| hit.gameObject.CompareTag("Chip"))
+        if (hit.gameObject.CompareTag("Button1") || hit.gameObject.CompareTag("Button2") || hit.gameObject.CompareTag("Key") || hit.gameObject.CompareTag("Chip"))
         {
             Rigidbody body = hit.collider.attachedRigidbody;
 
@@ -120,7 +146,7 @@ public class PlayerController : NetworkBehaviour
         if (hit.gameObject.CompareTag("Finish"))
         {
             StartCoroutine(DelayNext_Level());
-            StartCoroutine(DelayRespawnPos());
+            Debug.Log("Finish");
         }
 
         if (hit.gameObject.CompareTag("Spike"))

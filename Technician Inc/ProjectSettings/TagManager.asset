@@ -25,6 +25,7 @@ TagManager:
   - ChipTrigger
   - SlideUpTrigger
   - Spike
+  - UpDownTrigger
   layers:
   - Default
   - TransparentFX

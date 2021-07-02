@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MLAPI;
+using MLAPI.SceneManagement;
 using MLAPI.Messaging;
 
 public class PlayerSpawner : NetworkBehaviour
@@ -34,6 +35,7 @@ public class PlayerSpawner : NetworkBehaviour
     [ServerRpc]
     void RespawnServerRpc()
     {
+        //This can only be called on the server
         RespawnLocalClientRpc(GetSpawnPos_LocalPlayer());
     }
 

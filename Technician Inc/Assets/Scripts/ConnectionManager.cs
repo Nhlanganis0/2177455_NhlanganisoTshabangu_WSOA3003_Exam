@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using MLAPI;
 using MLAPI.Spawning;
+using MLAPI.Transports.UNET;
 using System;
 
 public class ConnectionManager : MonoBehaviour
 {
     [SerializeField] GameObject connectionButtonPanel;
+    public string IP_Address = "127.0.0.1";
+    UNetTransport transport;
 
-    public void host()
+    public void Host()
     {
         connectionButtonPanel.SetActive(false);
         NetworkManager.Singleton.ConnectionApprovalCallback += ApprovalCheck;
@@ -22,8 +25,10 @@ public class ConnectionManager : MonoBehaviour
         callBack(true, null, approve, NonLocalPlayerSpawn(), Quaternion.identity);
     }
 
-    public void join()
+    public void Join()
     {
+        transport = NetworkManager.Singleton.GetComponent<UNetTransport>();
+        transport.ConnectAddress = IP_Address;
         connectionButtonPanel.SetActive(false);
         NetworkManager.Singleton.NetworkConfig.ConnectionData = System.Text.Encoding.ASCII.GetBytes("1234");
         NetworkManager.Singleton.StartClient();
@@ -81,5 +86,10 @@ public class ConnectionManager : MonoBehaviour
         float y = -4f;
         float z = -6f;
         return new Vector3(x, y, z);
+    }
+
+    public void IP_AddressSwithed(string newAdress)
+    {
+        this.IP_Address = newAdress;
     }
 }

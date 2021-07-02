@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: -5857609584341672243}
   - component: {fileID: 1762036083196743171}
   - component: {fileID: 1972711464}
-  - component: {fileID: 8049295109049081975}
+  - component: {fileID: 9080074669345818092}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -188,10 +188,6 @@ MonoBehaviour:
   jumpHeijt: 3
   groundDistance: 0.5
   CurrentLevel_Cam: {fileID: 0}
-  LeveTwo_Instance: {fileID: 3569134671443303598, guid: 09a1b2e9d62c95045b18cfc87e3c6a61, type: 3}
-  LeveTwo_InstancePos: {fileID: 3569134671443303571, guid: 09a1b2e9d62c95045b18cfc87e3c6a61, type: 3}
-  LevelThree_Instance: {fileID: 0}
-  LeveThree_InstancePos: {fileID: 0}
   respawnPoint: {fileID: 7091372778294054333, guid: dfc9eb1bded8b34409fe9ac8df0af3ab, type: 3}
   player: {fileID: 5727761523526047913}
   groundcjeck: {fileID: 575617321}
@@ -261,6 +257,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ActualHealth: 100
+  ActualLevelNumber: 0
+  CurrentLevel_Cam: {fileID: 0}
+  LeveTwo_Instance: {fileID: 3569134671443303598, guid: 09a1b2e9d62c95045b18cfc87e3c6a61, type: 3}
+  LeveTwo_InstancePos: {fileID: 3569134671443303571, guid: 09a1b2e9d62c95045b18cfc87e3c6a61, type: 3}
+  LevelThree_Instance: {fileID: 0}
+  LeveThree_InstancePos: {fileID: 0}
 --- !u!143 &1972711464
 CharacterController:
   m_ObjectHideFlags: 0
@@ -279,7 +281,7 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.03, z: 0}
---- !u!114 &8049295109049081975
+--- !u!114 &9080074669345818092
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
